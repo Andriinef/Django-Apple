@@ -1,11 +1,12 @@
 {% load static %}
+{% load apple_tags %}
 <!DOCTYPE html>
 <html>
 <head>
 	<title>{{title}}</title>
 	<link type="text/css" href="{% static 'apple/css/styles.css' %}" rel="stylesheet" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link rel="shortcut icon" href="{% static 'apple/images/AN.ico' %}" type="image/x-icon"/>
+	<link rel="shortcut icon" href="{% static 'apple/images/AN.jps' %}" type="image/x-icon"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -32,20 +33,16 @@
 <tr>
 <!-- Sidebar слева -->
 	<td valign="top" class="left-chapters">
+
 	<ul id="leftchapters">
 {% if cat_selected == 0 %}
-		<li class="selected">Все категории</li>
+		<li class="selected">Всi категорії</li>
 {% else %}
-		<li><a href="{% url 'apple' %}">Все категории</a></li>
+		<li><a href="{% url 'apple' %}">Всi категорії</a></li>
 {% endif %}
 
-{% for c in cats %}
-		{% if c.pk == cat_selected %}
-			<li class="selected">{{c.name}}</li>
-		{% else %}
-			<li><a href="{{ c.det_absolute_url }}">{{c.name}}</a></li>
-		{% endif %}
-{% endfor %}
+{% show_categories  cat_selected=cat_selected %}
+
 <!--		<li class="share">-->
 <!--		<p>Наш канал</p>-->
 <!--		<a class="share-yt" href="https://www.youtube.com/watch?v=EJ0Smmm-aMc" target="_blank" rel="nofollow"></a>-->
@@ -70,7 +67,7 @@
 <!-- Footer -->
 <tr><td valign=top>
 	<div id="footer">
-		<p>&copy; 2022 Частичное или полное копирование информации с данного сайта для распространения на других ресурсах, в том числе и бумажных, строго запрещено.</p>
+		<p>&copy; 2022 Часткове або повне копіювання інформації з даного сайту для поширення на інших ресурсах, у тому числі паперових, суворо заборонено.</p>
 	</div>
 </td></tr></table>
 <!-- Конец footer'а и страницы -->
