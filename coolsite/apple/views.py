@@ -3,22 +3,20 @@ from django.shortcuts import render, redirect
 
 from .models import *
 
-menu = [{'title': "Продукция APPLE", 'url_name': "apple"},
-        {'title': "Добавить статью", 'url_name': "add_page"},
-        {'title': "Обратная связь", 'url_name': "contact"},
-        {'title': "Войти", 'url_name': "login"},
+menu = [{'title': "Продукцiя APPLE", 'url_name': "apple"},
+        {'title': "Додати статтю", 'url_name': "add_page"},
+        {'title': "Зворотній зв'язок", 'url_name': "contact"},
+        {'title': "Увійти", 'url_name': "login"},
         ]
 
 
 # Create your views here.
 def apple(request):
-    posts = Apple.objects.filter(pk__lte=10)
-    cats = Category.objects.all()
+    posts = Apple.objects.all
 
     context = {"menu": menu,
                "posts": posts,
-               "cats": cats,
-               "title": "Продукция APPLE",
+               "title": "Продукцiя APPLE",
                "cat_selected": 0,
                }
     return render(request, "apple/apple.html", context=context)
@@ -46,36 +44,34 @@ def imac(request):
 
 
 def add_page(request):
-    return HttpResponse("Добавить статью")
+    return HttpResponse("Додати статтю")
 
 
 def contact(request):
-    return HttpResponse("Обратная связь")
+    return HttpResponse("Зворотній зв'язок")
 
 
 def login(request):
-    return HttpResponse("Автоматизация")
+    return HttpResponse("Автоматизація")
 
 
 def show_post(request, post_id):
-    return HttpResponse(f"Отображение статьи с id = {post_id}")
+    return HttpResponse(f"Відображення статті з id= {post_id}")
 
 
 def show_category(request, cat_id):
     posts = Apple.objects.filter(cat_id=cat_id)
-    cats = Category.objects.all()
 
     if len(posts) == 0:
         raise Http404
 
     context = {"menu": menu,
                "posts": posts,
-               "cats": cats,
-               "title": "Категории APPLE",
+               "title": "Категорії APPLE",
                "cat_selected": cat_id,
                }
     return render(request, "apple/apple.html", context=context)
 
 
 def pageNotFound(request, exception):
-    return HttpResponseNotFound("<h1>Страница не найдена</h1>")
+    return HttpResponseNotFound("<h1>Сторінку не знайдено</h1>")
