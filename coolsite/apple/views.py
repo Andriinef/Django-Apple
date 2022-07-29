@@ -1,7 +1,9 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
+from .forms import *
 from .models import *
+
 
 menu = [{'title': "Продукцiя APPLE", 'url_name': "apple"},
         {'title': "Додати статтю", 'url_name': "add_page"},
@@ -44,7 +46,18 @@ def imac(request):
 
 
 def add_page(request):
-    return HttpResponse("Додати статтю")
+    if request.method == 'POST':
+        form = Add_Post_Fofm(request.POST)
+        if form.is_valid():
+            # print(form.cleaned_data)
+            try:
+                Apple.objects.create(**form.cleaned_data)
+                return redirect('apple')
+            except:
+                form.add_error(None, 'Помилка додавання посту')
+    else:
+        form = Add_Post_Fofm()
+    return render(request, "apple/add_page.html", {'form': form, 'menu': menu, 'title': "Додати статтю"})
 
 
 def contact(request):
@@ -55,8 +68,17 @@ def login(request):
     return HttpResponse("Автоматизація")
 
 
-def show_post(request, post_id):
-    return HttpResponse(f"Відображення статті з id= {post_id}")
+def show_post(request, post_slug):
+    post = get_object_or_404(Apple, slug=post_slug)
+
+    context = {
+        "post": post,
+        "menu": menu,
+        "title": post.title,
+        "cat_selected": post.cat_id,
+    }
+
+    return render(request, 'apple/post.html', context=context)
 
 
 def show_category(request, cat_id):
