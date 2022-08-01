@@ -18,6 +18,7 @@ from django.contrib import admin
 
 from django.urls import path, include
 
+
 from apple.views import pageNotFound
 from coolsite import settings
 
