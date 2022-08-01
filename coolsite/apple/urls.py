@@ -3,13 +3,13 @@ from django.urls import path, re_path
 from .views import *
 
 urlpatterns = [
-    path('', apple, name="apple"),
+    path('', AppleHome.as_view(), name="apple"),
     path('ipad/', ipad, name="ipad"),
     path('iphone/', iphone, name="iphone"),
     path('imac/', imac, name="imac"),
-    path('add_page/', add_page, name="add_page"),
+    path('add_page/', AddPage.as_view(), name="add_page"),
     path('contact/', contact, name="contact"),
     path('login/', login, name="login"),
-    path('post/<slug:post_slug>/', show_post, name="post"),
-    path('category/<int:cat_id>/', show_category, name="category"),
+    path('post/<slug:post_slug>/', ShowPost.as_view(), name="post"),
+    path('category/<slug:cat_slug>/', AppleCategory.as_view(), name="category"),
 ]
