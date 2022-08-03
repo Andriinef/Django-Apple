@@ -22,7 +22,7 @@ class Apple(models.Model):
     class Meta:
         verbose_name = "Продукція Apple"
         verbose_name_plural = "Продукція Apple"
-        ordering = ['cat_id', 'title']
+        ordering = ['id']
 
 
 class Category(models.Model):

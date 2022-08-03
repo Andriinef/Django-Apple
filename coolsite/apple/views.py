@@ -2,28 +2,22 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import *
 from .models import *
-
-menu = [{'title': "Продукцiя APPLE", 'url_name': "apple"},
-        {'title': "Додати статтю", 'url_name': "add_page"},
-        {'title': "Зворотній зв'язок", 'url_name': "contact"},
-        {'title': "Увійти", 'url_name': "login"},
-        ]
+from .utils import *
 
 
-class AppleHome(ListView):
+class AppleHome(DataMixin, ListView):
     model = Apple
     template_name = "apple/apple.html"
     context_object_name = "posts"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["menu"] = menu
-        context["title"] = "Головна сторінка"
-        context["cat_selected"] = 0
-        return context
+        c_def = self.get_user_context(title="Головна сторінка")
+        return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
         return Apple.objects.filter(is_published=True)
@@ -61,16 +55,16 @@ def imac(request):
     return render(request, "apple/imac.html", context=context)
 
 
-class AddPage(CreateView):
+class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     form_class = Add_Post_Fofm
     template_name = "apple/add_page.html"
     success_url = reverse_lazy("apple")
+    login_url = reverse_lazy("apple")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["menu"] = menu
-        context["title"] = "Добавлення сторінка"
-        return context
+        c_def = self.get_user_context(title="Добавлення сторінка")
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 # def add_page(request):
@@ -93,7 +87,7 @@ def login(request):
     return HttpResponse("Автоматизація")
 
 
-class ShowPost(DetailView):
+class ShowPost(DataMixin, DetailView):
     model = Apple
     template_name = "apple/post.html"
     context_object_name = "post"
@@ -101,9 +95,8 @@ class ShowPost(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["menu"] = menu
-        context["title"] = context["post"]
-        return context
+        c_def = self.get_user_context(title=context["post"])
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 # def show_post(request, post_slug):
@@ -119,7 +112,7 @@ class ShowPost(DetailView):
 #     return render(request, 'apple/post.html', context=context)
 
 
-class AppleCategory(ListView):
+class AppleCategory(DataMixin, ListView):
     model = Apple
     template_name = "apple/apple.html"
     context_object_name = "posts"
@@ -130,10 +123,9 @@ class AppleCategory(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["menu"] = menu
-        context["title"] = "Категорія - " + str(context["posts"][0].cat)
-        context["cat_selected"] = context["posts"][0].cat_id
-        return context
+        c_def = self.get_user_context(title="Категорія - " + str(context["posts"][0].cat),
+                                      cat_selected=context["posts"][0].cat_id)
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 # def show_category(request, cat_id):
@@ -152,3 +144,14 @@ class AppleCategory(ListView):
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound("<h1>Сторінку не знайдено</h1>")
+
+
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'apple/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Реєстрація')
+        return dict(list(context.items()) + list(c_def.items()))

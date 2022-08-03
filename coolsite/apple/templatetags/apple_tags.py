@@ -1,10 +1,10 @@
 from django import template
-from apple.models import *
+from ..models import *
 
 register = template.Library()
 
 
-@register.simple_tag(name="get_cats")
+@register.simple_tag(name="getcats")
 def get_categories(filter=None):
     if not filter:
         return Category.objects.all()
