@@ -1,8 +1,10 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout, login
 
 from .forms import *
 from .models import *
@@ -20,7 +22,7 @@ class AppleHome(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        return Apple.objects.filter(is_published=True)
+        return Apple.objects.filter(is_published=True).select_related('cat')
 
 
 # def apple(request):
@@ -79,12 +81,26 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
 #     return render(request, "apple/add_page.html", {'form': form, 'menu': menu, 'title': "Додати статтю"})
 
 
-def contact(request):
-    return HttpResponse("Зворотній зв'язок")
+# def contact(request):
+#     return HttpResponse("Зворотній зв'язок")
+
+class ContactFormView(DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'apple/contact.html'
+    success_url = reverse_lazy('apple')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Зворотній зв'язок")
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('apple')
 
 
-def login(request):
-    return HttpResponse("Автоматизація")
+# def login(request):
+#     return HttpResponse("Автоматизація")
 
 
 class ShowPost(DataMixin, DetailView):
@@ -119,12 +135,13 @@ class AppleCategory(DataMixin, ListView):
     allow_empty = False
 
     def get_queryset(self):
-        return Apple.objects.filter(cat__slug=self.kwargs["cat_slug"], is_published=True)
+        return Apple.objects.filter(cat__slug=self.kwargs["cat_slug"], is_published=True).select_related('cat')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Категорія - " + str(context["posts"][0].cat),
-                                      cat_selected=context["posts"][0].cat_id)
+        c = Category.objects.get(slug=self.kwargs['cat_slug'])
+        c_def = self.get_user_context(title="Категорія - " + str(c.name),
+                                      cat_selected=c.pk)
         return dict(list(context.items()) + list(c_def.items()))
 
 
@@ -155,3 +172,26 @@ class RegisterUser(DataMixin, CreateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Реєстрація')
         return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('apple')
+
+
+class LoginUser(DataMixin, LoginView):
+    form_class = LoginUserForm
+    template_name = 'apple/login.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Авторизація')
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_success_url(self):
+        return reverse_lazy('apple')
+
+
+def logout_user(request):
+    logout(request)
+    return request('login')
