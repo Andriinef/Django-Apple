@@ -3,6 +3,6 @@ Django==4.0.6
 django-debug-toolbar==3.5.0
 django-ranged-response==0.2.0
 django-simple-captcha==0.5.17
-gunicorn==20.1.0
+gunicorn
 Pillow==9.2.0
 sqlparse==0.4.2
