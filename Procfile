@@ -1,2 +1,2 @@
-web: gunicorn CCMS.wsgi --log-file -
+web: gunicorn Django-Apple.wsgi --log-file -
 
