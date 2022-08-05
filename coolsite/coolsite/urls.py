@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.template.defaulttags import url
 from django.urls import path, include
 from apple.views import pageNotFound
 from coolsite import settings
 from django.views.static import serve
-from django.conf.urls import url
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
