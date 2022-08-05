@@ -1,3 +1,2 @@
 release: python coolsite/manage.py migrate
-web: gunicorn Django-Apple.wsgi
-
+web: gunicorn Django-Apple.wsgi --log-file=-
