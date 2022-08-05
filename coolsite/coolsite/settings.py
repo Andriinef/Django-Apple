@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rvdt+%+#h84c@&53nf673u8qw2sow-$84#cc6s)i&thjtpbxdp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'https://django-apple-an.herokuapp.com/', 'dashboard.heroku.com', 'django-apple-an.herokuapp.com']
 
 
 # Application definition
@@ -131,9 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-INTERNAL_IPS = [
-    '127.0.0.1'
-]
+INTERNAL_IPS = []
 
 CACHES = {
     'default': {
