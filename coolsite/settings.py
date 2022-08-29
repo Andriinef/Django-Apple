@@ -89,11 +89,18 @@ DATABASES = {
         # "USER": os.environ["DB_USER"],
         # "PASSWORD": os.environ["DB_PASSWORD"],
         # "PORT": os.environ["DB_PORT"],
-        "HOST": "localhost",
+        # "HOST": "localhost",
+        # "PORT": "5432",
+        # "NAME": "test_db_an",
+        # "USER": "andrii",
+        # "PASSWORD": "5048",
+        "HOST": "ec2-52-30-159-47.eu-west-1.compute.amazonaws.com",
+        "NAME": "d37up976atnmvj",
+        "USER": "gqqhzkyccknezr",
+        "PASSWORD": "87869980071733a09bb3943d212236e05594955ba005e4d66c2bb5b92d8e8f08",
         "PORT": "5432",
-        "NAME": "test_db_an",
-        "USER": "andrii",
-        "PASSWORD": "5048",
+        "URL": "postgres://gqqhzkyccknezr:87869980071733a09bb3943d212236e05594955ba005e4d66c2bb5b92d8e8f08@ec2-52-30-159-47.eu-west-1.compute.amazonaws.com:5432/d37up976atnmvj",
+        "HEROKU CLI": "heroku pg:psql postgresql-aerodynamic-52507 --app django-apple",
     }
 }
 
