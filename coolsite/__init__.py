@@ -1,1 +1,1 @@
-from apple import views
+from . import *
