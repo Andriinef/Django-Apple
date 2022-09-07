@@ -23,14 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rvdt+%+#h84c@&53nf673u8qw2sow-$84#cc6s)i&thjtpbxdp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*', "https://django-apple.herokuapp.com/"]
+ALLOWED_HOSTS = ['*', "127.0.0.1", "https://django-apple.herokuapp.com/"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'apple.apps.AppleConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'captcha',
-    'apple.apps.AppleConfig',
 ]
 
 MIDDLEWARE = [
@@ -142,7 +142,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = []
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "apple/templates"),
+]
+
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+   ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
