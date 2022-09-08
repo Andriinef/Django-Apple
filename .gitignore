@@ -1,5 +1,7 @@
 venv
 .idea
-*/*.pyc
-*/*.djcache
-*/coolsite_cache
+.vscode
+*.pyc
+*.djcache
+coolsite_cache
+prob_env

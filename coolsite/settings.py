@@ -20,13 +20,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rvdt+%+#h84c@&53nf673u8qw2sow-$84#cc6s)i&thjtpbxdp'
+SECRET_KEY = os.environ.get('SECRET_KEY')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', "127.0.0.1", "https://django-apple.herokuapp.com/"]
 
+SESSION_COOKIE_SECURE = True
+
+SECURE_HSTS_SECONDS = 60
+
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+SECURE_HSTS_PRELOAD = True
+
+SECURE_SSL_REDIRECT = True
+
+CSRF_COOKIE_SECURE = True
 
 # Application definition
 
@@ -84,11 +98,11 @@ DATABASES = {
     # }
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        # "HOST": os.environ["DB_HOST"],
-        # "NAME": os.environ["DB_NAME"],
-        # "USER": os.environ["DB_USER"],
-        # "PASSWORD": os.environ["DB_PASSWORD"],
-        # "PORT": os.environ["DB_PORT"],
+        # "HOST": os.getenv["DB_HOST"],
+        # "NAME": os.getenv["DB_NAME"],
+        # "USER": os.getenv["DB_USER"],
+        # "PASSWORD": os.getenv["DB_PASSWORD"],
+        # "PORT": os.getenv["DB_PORT"],
         # "HOST": "localhost",
         # "PORT": "5432",
         # "NAME": "test_db_an",
@@ -141,20 +155,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "apple/templates"),
-# ]
-
-STATICFILES_DIRS = [ os.path.join(BASE_DIR,'static') ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'apple/static')
 
+STATIC_FILES_DIRS = [ os.path.join(BASE_DIR,'apple/static') ]
 
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-   ]
+# STATICFILES_FINDERS = [
+#     "django.contrib.staticfiles.finders.FileSystemFinder",
+#     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+#    ]
 
 
 # Default primary key field type
