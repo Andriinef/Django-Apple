@@ -27,21 +27,21 @@ SECRET_KEY = 'django-insecure-rvdt+%+#h84c@&53nf673u8qw2sow-$84#cc6s)i&thjtpbxdp
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', "127.0.0.1", "https://django-apple.herokuapp.com/"]
 
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
-SECURE_HSTS_SECONDS = 60
+# SECURE_HSTS_SECONDS = 60
 
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_PRELOAD = True
 
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
-CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 # Application definition
 
@@ -160,10 +160,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'apple/static/')
 
 STATIC_FILES_DIRS = [ os.path.join(BASE_DIR,'apple/static/') ]
 
-# STATICFILES_FINDERS = [
-#     "django.contrib.staticfiles.finders.FileSystemFinder",
-#     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-#    ]
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+   ]
 
 
 # Default primary key field type
