@@ -97,8 +97,7 @@ class AppleCategory(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c = Category.objects.get(slug=self.kwargs['cat_slug'])
-        c_def = self.get_user_context(title="Категорія - " + str(c.name),
-                                      cat_selected=c.pk)
+        c_def = self.get_user_context(title="Категорія - " + str(c.name),cat_selected=c.pk)
         return dict(list(context.items()) + list(c_def.items()))
 
 
